@@ -1,0 +1,26 @@
+{
+  "name": "http-service",
+  "version": "1.0.0",
+  "description": "A simple nodejs module that wraps http",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FDIM/http-service.git"
+  },
+  "keywords": [
+    "http",
+    "http-service"
+  ],
+  "author": "FDIM",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FDIM/http-service/issues"
+  },
+  "homepage": "https://github.com/FDIM/http-service#readme",
+  "dependencies": {
+    "extend": "^3.0.0"
+  }
+}
