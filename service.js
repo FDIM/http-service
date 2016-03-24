@@ -6,7 +6,7 @@ var https = require('https');
 
 function HttpService(endpoint) {
     this.requestOptions = undefined;
-    if (endpoint) {
+    if (typeof endpoint!=='undefined' && endpoint) {
       this.init(endpoint);
     }
 }
@@ -47,20 +47,21 @@ HttpService.prototype.request = function(path, method, query, callback) {
   request.path = path+'?'+querystring.stringify(query);
   request.method = method;
   var pending = (request.protocol === 'https:' ? https : http).request(request, function (res) {
-      // 2xx
-      if (res.statusCode / 100 !== 2) {
-          callback({
-              message: res.statusMessage || "Status code is not 2xx"
-          }, undefined);
-      } else {
-          var result = '';
-          res.on('data', function (chunk) {
-              result += chunk;
-          });
-          res.on('end', function () {
-              callback(undefined, result);
-          });
-      }
+      var result = '';
+      res.on('data', function (chunk) {
+          result += chunk;
+      });
+      res.on('end', function () {
+        // 2xx
+        if (res.statusCode / 100 !== 2) {
+            callback({
+                message: res.statusMessage || "Status code is not 2xx"
+            }, result);
+        } else {
+            callback(undefined, result);
+        }
+      });
+
   });
   pending.on('error', function (e) {
       callback({
@@ -76,20 +77,21 @@ HttpService.prototype.upload = function (path, method, query, contentType, paylo
     request.path = path+'?'+querystring.stringify(query);
     request.method = method;
     var pending = (request.protocol === 'https:' ? https : http).request(request, function (res) {
-        // 2xx
-        if (res.statusCode / 100 !== 2) {
-            callback({
-                message: res.statusMessage || "Status code is not 2xx"
-            }, undefined);
-        } else {
-            var result = '';
-            res.on('data', function (chunk) {
-                result += chunk;
-            });
-            res.on('end', function () {
-                callback(undefined, result);
-            });
-        }
+        var result = '';
+        res.on('data', function (chunk) {
+            result += chunk;
+        });
+        res.on('end', function () {
+          // 2xx
+          if (res.statusCode / 100 !== 2) {
+              callback({
+                  message: res.statusMessage || "Status code is not 2xx"
+              }, result);
+          } else {
+              callback(undefined, result);
+          }
+        });
+
     });
     pending.on('error', function (e) {
         callback({
