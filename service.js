@@ -107,7 +107,7 @@ function callbackWithJSONParsing(callback){
         try{
           var res = JSON.parse(response);
           if(res && res!==''){
-            callback(res, undefined );
+            callback(res.error || res, undefined );
           }else{
             callback({message:e.message}, response);
           }
