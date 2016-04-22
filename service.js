@@ -104,7 +104,16 @@ HttpService.prototype.upload = function (path, method, query, contentType, paylo
 function callbackWithJSONParsing(callback){
     return function(err, response){
       if(err){
-        callback(err, response);
+        try{
+          var res = JSON.parse(response);
+          if(res && res!==''){
+            callback(res, undefined );
+          }else{
+            callback({message:e.message}, response);
+          }
+        }catch(e){
+          callback({message:e.message}, response);
+        }
       }else{
         try{
           callback(err, JSON.parse(response));
