@@ -44,7 +44,9 @@ HttpService.prototype.post = function (path, query, data, callback) {
 };
 HttpService.prototype.request = function(path, method, query, callback) {
   var request = extend({}, this.requestOptions);
-  request.path = path+'?'+querystring.stringify(query);
+  if (path!==undefined) {
+    request.path = path+'?'+querystring.stringify(query);
+  }
   request.method = method;
   var pending = (request.protocol === 'https:' ? https : http).request(request, function (res) {
       var result = '';
@@ -55,6 +57,7 @@ HttpService.prototype.request = function(path, method, query, callback) {
         // 2xx
         if (res.statusCode / 100 !== 2) {
             callback({
+                code: res.statusCode,
                 message: res.statusMessage || "Status code is not 2xx"
             }, result);
         } else {
@@ -74,7 +77,9 @@ HttpService.prototype.upload = function (path, method, query, contentType, paylo
     var request = extend({}, this.requestOptions);
     request.headers['Content-Type'] = contentType;
     request.headers['Content-Length'] = Buffer.byteLength(payload);
-    request.path = path+'?'+querystring.stringify(query);
+    if (path!==undefined) {
+      request.path = path+'?'+querystring.stringify(query);
+    }
     request.method = method;
     var pending = (request.protocol === 'https:' ? https : http).request(request, function (res) {
         var result = '';
@@ -85,6 +90,7 @@ HttpService.prototype.upload = function (path, method, query, contentType, paylo
           // 2xx
           if (res.statusCode / 100 !== 2) {
               callback({
+                  code: res.statusCode,
                   message: res.statusMessage || "Status code is not 2xx"
               }, result);
           } else {
