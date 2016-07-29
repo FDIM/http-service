@@ -25,7 +25,7 @@ test.put('/my-path', {queryParam:1}, {payloadParam:1}, function(err, data){});
 
 ```
 // services/my-api.js
-var HttpService = require('./http.js');
+var HttpService = require('http-service');
 
 function MyApi(){
   HttpService.call(this);
