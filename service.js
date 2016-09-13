@@ -67,9 +67,8 @@ HttpService.prototype.request = function (path, method, query, callback) {
 
   });
   pending.on('error', function (e) {
-    callback({
-      message: e.message
-    });
+    e.message = "connection-error";
+    callback(e);
   });
   pending.end();
 };
@@ -100,9 +99,8 @@ HttpService.prototype.upload = function (path, method, query, contentType, paylo
 
   });
   pending.on('error', function (e) {
-    callback({
-      message: e.message
-    });
+    e.message = "connection-error";
+    callback(e);
   });
   pending.write(payload);
   pending.end();
@@ -111,7 +109,7 @@ function callbackWithJSONParsing(callback) {
   return function (err, response) {
     if (err) {
       try {
-        var res = JSON.parse(response || '{"error":"no-response"}');
+        var res = JSON.parse(response || '""');
         if (res && res !== '') {
           var parsedError = res.error || res;
           if (typeof parsedError === 'string') {
@@ -127,7 +125,7 @@ function callbackWithJSONParsing(callback) {
       }
     } else {
       try {
-        callback(err, JSON.parse(response || '{"error":"no-response"}'));
+        callback(err, JSON.parse(response || '""'));
       } catch (e) {
         callback({ message: e.message }, response);
       }

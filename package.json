@@ -1,6 +1,6 @@
 {
   "name": "http-service",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A simple nodejs module that wraps http",
   "main": "index.js",
   "scripts": {
