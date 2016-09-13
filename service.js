@@ -111,18 +111,23 @@ function callbackWithJSONParsing(callback) {
   return function (err, response) {
     if (err) {
       try {
-        var res = JSON.parse(response);
+        var res = JSON.parse(response || '{"error":"no-response"}');
         if (res && res !== '') {
-          callback(res.error || res, undefined);
+          var parsedError = res.error || res;
+          if (typeof parsedError === 'string') {
+            parsedError = { message: parsedError };
+          }
+          parsedError.previous = err;
+          callback(parsedError, undefined);
         } else {
-          callback({ message: e.message }, response);
+          callback(err, response);
         }
       } catch (e) {
-        callback({ message: e.message }, response);
+        callback({ message: e.message, previous: err }, response);
       }
     } else {
       try {
-        callback(err, JSON.parse(response));
+        callback(err, JSON.parse(response || '{"error":"no-response"}'));
       } catch (e) {
         callback({ message: e.message }, response);
       }
