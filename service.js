@@ -94,7 +94,8 @@ HttpService.prototype.$request = function (options, callback) {
         if (res.statusCode / 100 !== 2) {
           reject({
             code: res.statusCode,
-            message: res.statusMessage || "Status code is not 2xx"
+            message: res.statusMessage || "Status code is not 2xx",
+            data: result
           }, result);
         } else {
           resolve(result);
@@ -117,5 +118,5 @@ function returnPromiseOrInvokeCallback(promise, callback) {
     return promise;
   }
   // invoke callback
-  promise.then((result) => { callback(null, result); }).catch(callback);
+  promise.then((result) => { callback(null, result); }).catch((err) => { callback(err, err.data); });
 }
