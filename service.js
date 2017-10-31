@@ -9,6 +9,7 @@ function HttpService(endpoint) {
     this.init(endpoint);
   }
 }
+HttpService.JSON_CONTENT_TYPE_REGEX = /(application\/json)|(text\/javascript)/i;
 // export
 module.exports = HttpService;
 
@@ -84,7 +85,7 @@ HttpService.prototype.$request = function (options, callback) {
       });
       res.on('end', () => {
         const contentType = (res.headers['content-type'] || '').toLowerCase();
-        if (contentType.indexOf('application/json') !== -1) {
+        if (HttpService.JSON_CONTENT_TYPE_REGEX.test(contentType)) {
           try {
             const json = JSON.parse(result || '""');
             result = json;
