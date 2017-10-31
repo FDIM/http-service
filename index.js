@@ -1,3 +1,3 @@
-var HttpService = require("./service.js");
+const HttpService = require("./service.js");
 
 module.exports = HttpService;

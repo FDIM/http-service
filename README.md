@@ -15,7 +15,7 @@ var test = new HttpService("https://localhost:5426");
 var test = new HttpService(); 
 test.init("https://localhost:5426"); // meant to be initialized from outside and use environment variables
 
-test.get('/my-path', {queryParam:1}, function(err, data){});
+test.get('/my-path', {queryParam:1}, function(err, data){}); // if callback is not provided, a promise is returned instead
 test.delete('/my-path', {queryParam:1}, function(err, data){});
 test.post('/my-path', {queryParam:1}, {payloadParam:1}, function(err, data){});
 test.put('/my-path', {queryParam:1}, {payloadParam:1}, function(err, data){});
