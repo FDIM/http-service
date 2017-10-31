@@ -105,7 +105,7 @@ HttpService.prototype.$request = function (options, callback) {
     pending.on('error', reject);
 
     if (options.payload) {
-      pending.write(payload);
+      pending.write(options.payload);
     }
     pending.end();
 
